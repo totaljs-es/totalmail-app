@@ -1,6 +1,15 @@
-# TotalMail App
+<p align="center"><img src="src-tauri/icons/128x128@2x.png" width="128" height="128" alt="TotalMail app icon" /></p>
 
-[![Downloads](https://img.shields.io/github/downloads/totaljs-es/totalmail-app/total?color=2ea44f)](https://github.com/totaljs-es/totalmail-app/releases)
+<h1 align="center">TotalMail App</h1>
+
+<p align="center">
+  <a href="https://github.com/totaljs-es/totalmail-app/releases/latest"><img src="https://img.shields.io/github/v/release/totaljs-es/totalmail-app?label=version&color=1f6feb" alt="Latest version" /></a>
+  <a href="https://github.com/totaljs-es/totalmail-app/releases"><img src="https://img.shields.io/github/downloads/totaljs-es/totalmail-app/total?color=2ea44f" alt="Downloads" /></a>
+  <img src="https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Android-0078d4" alt="Windows, Linux and Android" />
+  <a href="https://tauri.app"><img src="https://img.shields.io/badge/built%20with-Tauri%202-24c8db?logo=tauri&logoColor=white" alt="Built with Tauri 2" /></a>
+  <a href="https://github.com/totaljs-es/totalmail-app/actions/workflows/ci.yml"><img src="https://github.com/totaljs-es/totalmail-app/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/totaljs-es/totalmail-app" alt="MIT license" /></a>
+</p>
 
 The webmail of your [TotalMail](https://github.com/totaljs-es/totalmail) server in an app of its own, for **Windows**, **Linux** and **Android**. On iPhone, iPad and Mac, TotalMail has its native app in the App Store.
 
