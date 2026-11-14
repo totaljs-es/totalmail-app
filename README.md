@@ -27,7 +27,7 @@ Every version is in [Releases](https://github.com/totaljs-es/totalmail-app/relea
 ## Security
 
 - Only your server is shown inside the app. Any other address opens in the browser, and the app's own page accepts only `https` (plain `http` only on the local network, as the Apple app).
-- The pages of your server can call exactly two functions of the app, a notification and the permission for it, and only from the address you entered (`src-tauri/src/lib.rs`, `grant`). They cannot read files, run programs or reach anything else of the system.
+- The pages of your server can call only the functions of notifications (show one, read and ask for the permission), and only from the address you entered (`src-tauri/src/lib.rs`, `grant`). They cannot read files, run programs or reach anything else of the system.
 - The address of the server is the only thing the app keeps; the sign-in is the cookie of the webmail, as in a browser.
 
 ## Development

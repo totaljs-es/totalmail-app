@@ -35,6 +35,8 @@
 			function() { callback && callback(permission); return permission; }
 		);
 	};
+	// The state of the system can be newer than the one the window was opened with (and on Android it is not known then).
+	invoke('notify_state').then(function(value) { permission = value; }, function() {});
 	try {
 		Object.defineProperty(window, 'Notification', { value: AppNotification, configurable: true, writable: true });
 	} catch (e) {

@@ -9,9 +9,12 @@ name: Release
 #   ANDROID_KEY_ALIAS          the alias of the key
 # Keep the keystore: an update of the app must be signed with the same key, or Android refuses to install it over the old one.
 # Windows is not signed yet (see README.md, Code signing).
+# Run by hand from the Actions tab (or gh workflow run release.yml), it builds everything and keeps the files as artifacts
+# of the run, without publishing a release: a way to try the build before tagging.
 on:
   push:
     tags: ['v*.*.*']
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -27,7 +30,9 @@ jobs:
         name: The tag is the version of package.json
         run: |
           version=$(node -p "require('./package.json').version")
-          test "v$version" = "$GITHUB_REF_NAME" || { echo "::error::The tag $GITHUB_REF_NAME is not v$version (package.json)"; exit 1; }
+          if [ "$GITHUB_REF_TYPE" = tag ]; then
+            test "v$version" = "$GITHUB_REF_NAME" || { echo "::error::The tag $GITHUB_REF_NAME is not v$version (package.json)"; exit 1; }
+          fi
           echo "version=$version" >> "$GITHUB_OUTPUT"
       - uses: dtolnay/rust-toolchain@stable
       - name: Install the libraries of the web view
@@ -104,7 +109,10 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
+      # Its default packages include `tools`, which the SDK no longer has.
       - uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
         with:
           # The default list asks for "tools", a package the Android repository no longer has
           packages: platform-tools
@@ -146,6 +154,7 @@ jobs:
           path: out/*
 
   release:
+    if: github.ref_type == 'tag'
     needs: [check, windows, linux, android]
     runs-on: ubuntu-latest
     permissions:

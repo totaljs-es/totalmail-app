@@ -3,7 +3,7 @@
 // The window starts on the page of the app (../src), which asks for the address of the server once. Then it shows the
 // server's own pages: the app adds no mail logic of its own, so every improvement of the webmail reaches it by itself.
 // Only the server is shown inside the app; any other address opens in the system browser. The server's pages can call
-// exactly two commands of the app (a notification and the permission for them), granted to that address alone.
+// only the commands of notifications (show one, read and ask for the permission), granted to that address alone.
 
 use std::sync::{Arc, Mutex};
 use std::time::Duration;
@@ -99,7 +99,7 @@ async fn check(url: &Url) -> Result<(), &'static str> {
 	if body.get("status").and_then(|s| s.as_str()) == Some("ok") { Ok(()) } else { Err("nottm") }
 }
 
-// The server's pages may call `notify` and `notify_permission`, and nothing else.
+// The server's pages may call `notify`, `notify_state` and `notify_permission`, and nothing else.
 fn grant(app: &AppHandle, url: &Url) {
 	let origin = url.origin().ascii_serialization();
 	let identifier = format!("server-{}", origin.replace(|c: char| !c.is_ascii_alphanumeric(), "-"));
@@ -107,7 +107,8 @@ fn grant(app: &AppHandle, url: &Url) {
 		.remote(format!("{origin}/*"))
 		.windows([MAIN, "print-*"])
 		.permission("allow-notify")
-		.permission("allow-notify-permission");
+		.permission("allow-notify-permission")
+		.permission("allow-notify-state");
 	let _ = app.add_capability(capability);
 }
 
@@ -163,6 +164,12 @@ fn notify(app: AppHandle, title: String, body: Option<String>) -> Result<(), Str
 	builder.show().map_err(|e| e.to_string())
 }
 
+// The permission as it is now, without asking for it.
+#[tauri::command]
+fn notify_state(app: AppHandle) -> String {
+	permission_name(app.notification().permission_state().ok()).to_string()
+}
+
 #[tauri::command]
 fn notify_permission(app: AppHandle) -> String {
 	let state = match app.notification().permission_state() {
@@ -216,13 +223,17 @@ pub fn run() {
 		.plugin(tauri_plugin_opener::init())
 		.plugin(tauri_plugin_notification::init())
 		.manage(Server::default())
-		.invoke_handler(tauri::generate_handler![saved, connect, forget, notify, notify_permission])
+		.invoke_handler(tauri::generate_handler![saved, connect, forget, notify, notify_permission, notify_state])
 		.setup(|app| {
 			let handle = app.handle().clone();
 			let current = app.state::<Server>().0.clone();
 
-			// What Notification.permission says when a page loads; requestPermission() asks the system.
+			// What Notification.permission says when a page loads; requestPermission() asks the system. On Android the
+			// plugin answers only once the activity runs, so the page asks for it then (notify_state).
+			#[cfg(desktop)]
 			let permission = permission_name(app.notification().permission_state().ok());
+			#[cfg(mobile)]
+			let permission = "default";
 			let script = include_str!("../../src/notification.js").replace("__PERMISSION__", permission);
 
 			let navigating = current.clone();
