@@ -139,10 +139,10 @@ jobs:
           unsigned=$(ls src-tauri/gen/android/app/build/outputs/apk/universal/release/*-unsigned.apk)
           mkdir out
           "$tools/zipalign" -p -f 4 "$unsigned" "$RUNNER_TEMP/aligned.apk"
-          "$tools/apksigner" sign --ks "$RUNNER_TEMP/totalmail.keystore" --ks-pass env:KEYSTORE_PASSWORD --ks-key-alias "$KEY_ALIAS" \
+          "$tools/apksigner" sign --v4-signing-enabled false --ks "$RUNNER_TEMP/totalmail.keystore" --ks-pass env:KEYSTORE_PASSWORD --ks-key-alias "$KEY_ALIAS" \
             --out "out/TotalMail-${{ needs.check.outputs.version }}-android.apk" "$RUNNER_TEMP/aligned.apk"
           "$tools/apksigner" verify --print-certs "out/TotalMail-${{ needs.check.outputs.version }}-android.apk" | grep -i "SHA-256"
-          rm -f "$RUNNER_TEMP/totalmail.keystore"
+          rm -f "$RUNNER_TEMP/totalmail.keystore" out/*.idsig
       - uses: actions/upload-artifact@v7
         with:
           name: android
