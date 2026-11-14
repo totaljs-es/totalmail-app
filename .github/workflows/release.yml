@@ -105,6 +105,9 @@ jobs:
           distribution: temurin
           java-version: 17
       - uses: android-actions/setup-android@v3
+        with:
+          # The default list asks for "tools", a package the Android repository no longer has
+          packages: platform-tools
       - name: Install the NDK and the build tools
         run: |
           sdkmanager "ndk;$NDK_VERSION" "build-tools;$BUILD_TOOLS" "platforms;android-35"
