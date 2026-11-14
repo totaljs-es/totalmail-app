@@ -16,6 +16,7 @@ Every version is in [Releases](https://github.com/totaljs-es/totalmail-app/relea
 
 - **Windows:** the installer is not signed yet. The first time, SmartScreen says that it protected your PC: choose **More info → Run anyway**. It installs for your user only and needs no administrator.
 - **Android:** open the APK on the phone; Android asks to allow installing apps from that source (the browser or the file manager). Updates are installed the same way, over the old version.
+  On Android the server must use `https`: Android does not let apps load plain `http` pages, so a server on the local network without HTTPS (`http://192.168.…`) opens on Windows, Linux and the Apple app but not on Android.
 
 ## What it does
 
