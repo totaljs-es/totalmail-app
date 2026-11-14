@@ -1,0 +1,48 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "TotalMail",
+  "mainBinaryName": "TotalMail",
+  "version": "../package.json",
+  "identifier": "es.totaljs.totalmail.client",
+  "build": {
+    "frontendDist": "../src"
+  },
+  "app": {
+    "withGlobalTauri": false,
+    "windows": [],
+    "security": {
+      "csp": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src ipc: http://ipc.localhost"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["nsis", "msi", "deb", "appimage", "rpm", "dmg"],
+    "publisher": "Spanish Total.js Platform",
+    "copyright": "© 2026 Spanish Total.js Platform",
+    "category": "Productivity",
+    "shortDescription": "Your TotalMail webmail in an app of its own",
+    "longDescription": "TotalMail shows the webmail of your own TotalMail server in a window of its own, with system notifications. Links and sign-in with Google or Microsoft open in your browser.",
+    "homepage": "https://totalmail.totaljs.es",
+    "license": "MIT",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "windows": {
+      "nsis": {
+        "installMode": "currentUser",
+        "languages": ["English", "Spanish", "German", "French", "Italian", "Portuguese", "Greek", "Slovak"],
+        "displayLanguageSelector": false
+      },
+      "wix": {
+        "language": ["en-US"]
+      }
+    },
+    "linux": {
+      "deb": { "section": "mail" }
+    }
+  }
+}

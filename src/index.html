@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+		<meta name="color-scheme" content="dark" />
+		<title>TotalMail</title>
+		<link rel="stylesheet" href="app.css" />
+	</head>
+	<body>
+		<main class="card">
+			<div class="brand">
+				<img src="logo.png" width="156" height="156" alt="" />
+				<span class="wordmark">Total<span>Mail</span></span>
+			</div>
+			<form id="form" autocomplete="on" novalidate>
+				<h1 data-t="welcome">Welcome to TotalMail</h1>
+				<label for="address" data-t="enter">Enter the address of your TotalMail.</label>
+				<input id="address" name="url" type="url" inputmode="url" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="mail.example.com" required />
+				<p id="error" class="error" role="alert"></p>
+				<button id="continue" type="submit" class="primary" data-t="continue">Continue</button>
+			</form>
+			<div id="down" hidden>
+				<h1 data-t="down">TotalMail cannot reach your server right now.</h1>
+				<button id="retry" type="button" class="primary" data-t="retry">Try again</button>
+				<button id="other" type="button" class="link" data-t="other">Use another server</button>
+			</div>
+		</main>
+		<script src="app.js"></script>
+	</body>
+</html>

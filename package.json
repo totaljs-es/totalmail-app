@@ -1,0 +1,16 @@
+{
+  "name": "totalmail-app",
+  "private": true,
+  "version": "1.0.0",
+  "description": "TotalMail for Windows, Linux and Android: the webmail of your TotalMail server in an app of its own",
+  "license": "MIT",
+  "scripts": {
+    "tauri": "tauri",
+    "dev": "tauri dev",
+    "build": "tauri build",
+    "test": "cargo test --manifest-path src-tauri/Cargo.toml"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.12.4"
+  }
+}
