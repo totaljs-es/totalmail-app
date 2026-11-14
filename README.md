@@ -1,4 +1,4 @@
-<p align="center"><img src="src-tauri/icons/128x128@2x.png" width="128" height="128" alt="TotalMail app icon" /></p>
+<p align="center"><img src="public/img/totalmail-logo.png" width="128" height="128" alt="TotalMail logo" /></p>
 
 <h1 align="center">TotalMail App</h1>
 
