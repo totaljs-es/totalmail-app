@@ -1,4 +1,4 @@
-<p align="center"><img src="https://github.com/totaljs-es/totalmail/public/img/totalmail-logo.png" width="128" height="128" alt="TotalMail logo" /></p>
+<p align="center"><img src="src/logo.png" width="128" height="128" alt="TotalMail logo" /></p>
 
 <h1 align="center">TotalMail App</h1>
 
