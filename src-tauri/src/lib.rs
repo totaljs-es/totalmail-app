@@ -219,7 +219,7 @@ fn menu(app: &AppHandle) -> tauri::Result<tauri::menu::Menu<tauri::Wry>> {
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-	tauri::Builder::default()
+	let app = tauri::Builder::default()
 		.plugin(tauri_plugin_opener::init())
 		.plugin(tauri_plugin_notification::init())
 		.manage(Server::default())
@@ -282,18 +282,21 @@ pub fn run() {
 
 			builder.build()?;
 			Ok(())
-		})
-		.on_menu_event(|app, event| match event.id().as_ref() {
-			"other" => forget_server(app, &app.state::<Server>()),
-			"reload" => {
-				if let Some(window) = app.get_webview_window(MAIN) {
-					let _ = window.eval("location.reload()");
-				}
+		});
+
+	// The menu exists on Windows, Linux and macOS only.
+	#[cfg(desktop)]
+	let app = app.on_menu_event(|app, event| match event.id().as_ref() {
+		"other" => forget_server(app, &app.state::<Server>()),
+		"reload" => {
+			if let Some(window) = app.get_webview_window(MAIN) {
+				let _ = window.eval("location.reload()");
 			}
-			_ => {}
-		})
-		.run(tauri::generate_context!())
-		.expect("error while running TotalMail");
+		}
+		_ => {}
+	});
+
+	app.run(tauri::generate_context!()).expect("error while running TotalMail");
 }
 
 #[cfg(test)]
