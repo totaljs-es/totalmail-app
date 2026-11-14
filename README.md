@@ -1,5 +1,7 @@
 # TotalMail App
 
+[![Downloads](https://img.shields.io/github/downloads/totaljs-es/totalmail-app/total?color=2ea44f)](https://github.com/totaljs-es/totalmail-app/releases)
+
 The webmail of your [TotalMail](https://github.com/totaljs-es/totalmail) server in an app of its own, for **Windows**, **Linux** and **Android**. On iPhone, iPad and Mac, TotalMail has its native app in the App Store.
 
 TotalMail is self-hosted: the app needs the address of a TotalMail server, which it asks for the first time it opens.
