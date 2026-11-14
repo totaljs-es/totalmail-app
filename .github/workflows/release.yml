@@ -4,7 +4,7 @@ name: Release
 # a GitHub release with their SHA-256. Nothing is built on a personal machine: the release is the build of this tag.
 #
 # Android needs the key that signs the APK, in the secrets of the repository:
-#   ANDROID_KEYSTORE           the keystore, in base64 (base64 -i totalmail.jks)
+#   ANDROID_KEYSTORE           the keystore (PKCS12 or JKS), in base64 (base64 -i totalmail-android.p12)
 #   ANDROID_KEYSTORE_PASSWORD  its password
 #   ANDROID_KEY_ALIAS          the alias of the key
 # Keep the keystore: an update of the app must be signed with the same key, or Android refuses to install it over the old one.
@@ -128,15 +128,15 @@ jobs:
           KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
         run: |
           test -n "$KEYSTORE" || { echo "::error::ANDROID_KEYSTORE is not in the secrets of the repository (see the top of this file)"; exit 1; }
-          echo "$KEYSTORE" | base64 -d > "$RUNNER_TEMP/totalmail.jks"
+          echo "$KEYSTORE" | base64 -d > "$RUNNER_TEMP/totalmail.keystore"
           tools="$ANDROID_HOME/build-tools/$BUILD_TOOLS"
           unsigned=$(ls src-tauri/gen/android/app/build/outputs/apk/universal/release/*-unsigned.apk)
           mkdir out
           "$tools/zipalign" -p -f 4 "$unsigned" "$RUNNER_TEMP/aligned.apk"
-          "$tools/apksigner" sign --ks "$RUNNER_TEMP/totalmail.jks" --ks-pass env:KEYSTORE_PASSWORD --ks-key-alias "$KEY_ALIAS" \
+          "$tools/apksigner" sign --ks "$RUNNER_TEMP/totalmail.keystore" --ks-pass env:KEYSTORE_PASSWORD --ks-key-alias "$KEY_ALIAS" \
             --out "out/TotalMail-${{ needs.check.outputs.version }}-android.apk" "$RUNNER_TEMP/aligned.apk"
           "$tools/apksigner" verify --print-certs "out/TotalMail-${{ needs.check.outputs.version }}-android.apk" | grep -i "SHA-256"
-          rm -f "$RUNNER_TEMP/totalmail.jks"
+          rm -f "$RUNNER_TEMP/totalmail.keystore"
       - uses: actions/upload-artifact@v4
         with:
           name: android
